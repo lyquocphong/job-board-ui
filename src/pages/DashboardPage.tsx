@@ -9,7 +9,7 @@ const DashboardPage: React.FC = () => {
   const modalStore = useModalStore();
   const navigate = useNavigate();
 
-  const { data: jobs, isLoading, isError: error } = useFetchJobs();
+  const { data: jobs, isLoading, error } = useFetchJobs();
   const [message, setMessage] = useState<string | null>(null);
 
   const hideModal = () => {
@@ -89,14 +89,6 @@ const DashboardPage: React.FC = () => {
       },
     });
   };
-
-  if (!jobs || jobs.length == 0) {
-    return (
-      <div className="bg-gray-100 border border-gray-300 text-gray-700 px-4 py-3 rounded relative">
-        <p className="text-center">No items to display.</p>
-      </div>
-    );
-  }
 
   return (
     <div className="text-center">
