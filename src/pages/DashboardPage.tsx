@@ -1,9 +1,10 @@
 import React, { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import JobList from "../components/Job/JobList";
-import { ActionEvent, IJob, ActionType, ModalType } from "../types";
+import JobForm from "../components/Job/JobForm";
+import { ActionEvent, IJob, ActionType, ModalType, JobFormValue } from "../types";
 import { useModalStore } from "../contexts/StoreContext";
-import { deleteJob, useFetchJobs } from "../services/job";
+import { createJob, deleteJob, updateJob, useFetchJobs } from "../services/job";
 
 const DashboardPage: React.FC = () => {
   const modalStore = useModalStore();
@@ -11,6 +12,7 @@ const DashboardPage: React.FC = () => {
 
   const { data: jobs, isLoading, error } = useFetchJobs();
   const [message, setMessage] = useState<string | null>(null);
+  const [isCreateFormOpen, setCreateFormOpen] = useState(false);
 
   const hideModal = () => {
     modalStore.hideModal();
@@ -90,9 +92,56 @@ const DashboardPage: React.FC = () => {
     });
   };
 
+  const handleToggleCreateForm = () => {
+    setCreateFormOpen(!isCreateFormOpen);
+  };
+
+  const handleConfirmCreate = async (newValue: JobFormValue) => {    
+    const loaderMessage = 'Creating job';
+    modalStore.showModal({
+      type: ModalType.Loader,
+      message: loaderMessage,
+    });
+
+    try {
+      await createJob(newValue);      
+      setMessage(`Create job successfully`);
+    } catch (error: any) {
+      setMessage(`Error while creating job`);
+    }
+    modalStore.hideModal();
+    handleToggleCreateForm();
+  };
+
+  const handleCreateFormSubmit = async (newValue: JobFormValue) => {    
+    const message = `Are you sure you want to create job`;
+
+    modalStore.showModal({
+      type: ModalType.Confirm,
+      message,
+      confirmLabel: "Create",
+      confirmAction: () => {
+        handleConfirmCreate(newValue);
+      },
+    });
+  };
+
   return (
     <div className="text-center">
       <h1 className="text-4xl font-bold mb-4">Dashboard</h1>
+      <button
+        className="bg-blue-500 text-white py-2 px-4 rounded-md mb-4"
+        onClick={handleToggleCreateForm}
+      >
+        Create new job
+      </button>
+      {isCreateFormOpen && (
+        <JobForm
+          mode={"create"}
+          onSubmit={handleCreateFormSubmit}
+          onCancel={handleToggleCreateForm}
+        />
+      )}
       {!jobs || jobs.length === 0 ? (
         <div className="bg-gray-100 border border-gray-300 text-gray-700 px-4 py-3 rounded relative">
           <p className="text-center">No items to display.</p>

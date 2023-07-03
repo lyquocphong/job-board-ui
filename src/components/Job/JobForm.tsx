@@ -4,17 +4,35 @@ import { IJob, PartialBy } from "../../types";
 type JobFormValue = PartialBy<IJob, "id">;
 
 interface JobFormProps {
-  initialValues: JobFormValue;
+  initialValues?: JobFormValue;
   mode: "create" | "update";
   onSubmit: (values: JobFormValue) => void;
   onCancel: () => void;
 }
 
-const JobForm: React.FC<JobFormProps> = ({ initialValues, mode, onSubmit, onCancel }) => {
-  const [values, setValues] = useState<PartialBy<IJob, "id">>(initialValues);
+const emptyValues: JobFormValue = {
+    title: '',
+    location: '',
+    startDate: '',
+    publishEndDate: '',
+    contactDetails: '',
+    companyDetails: '',
+    requirements: '',
+    duration: '',
+    duty: ''
+}
 
+const JobForm: React.FC<JobFormProps> = ({
+  initialValues = emptyValues,
+  mode,
+  onSubmit,
+  onCancel,
+}) => {
+  const [values, setValues] = useState<JobFormValue>(initialValues);
   useEffect(() => {
-    setValues(initialValues);
+    if (initialValues) {
+      setValues(initialValues);
+    }
   }, [initialValues]);
 
   const handleChange = (
@@ -29,7 +47,7 @@ const JobForm: React.FC<JobFormProps> = ({ initialValues, mode, onSubmit, onCanc
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(values);
+    onSubmit(values as JobFormValue);
   };
 
   return (
@@ -42,7 +60,7 @@ const JobForm: React.FC<JobFormProps> = ({ initialValues, mode, onSubmit, onCanc
           type="text"
           id="title"
           name="title"
-          value={values.title || ""}
+          value={values.title}
           onChange={handleChange}
           required
           className="border border-gray-300 rounded-md py-2 px-3 w-full"
@@ -97,6 +115,22 @@ const JobForm: React.FC<JobFormProps> = ({ initialValues, mode, onSubmit, onCanc
           onChange={handleChange}
           required
           className="border border-gray-300 rounded-md py-2 px-3 w-full"
+        />
+      </div>
+      <div className="mb-4">
+        <label
+          htmlFor="duty"
+          className="block text-gray-700 font-bold mb-2"
+        >
+          Duty
+        </label>
+        <textarea
+          id="duty"
+          name="duty"
+          value={values.duty || ""}
+          onChange={handleChange}
+          required
+          className="border border-gray-300 rounded-md py-2 px-3 w-full resize-none"
         />
       </div>
       <div className="mb-4">
