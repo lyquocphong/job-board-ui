@@ -67,7 +67,7 @@ const DashboardPage: React.FC = () => {
       await deleteJob(id);
       setMessage(`Delete job ${title} successfully`);
     } catch (error: any) {
-      setMessage(`Error while deleting job ${title} successfully`);
+      setMessage(`Error while deleting job ${title}`);
     }
     modalStore.hideModal();
   };

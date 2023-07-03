@@ -65,6 +65,7 @@ export type FetchData<T> = {
     data: T | null;
     isLoading: boolean;
     error: any;
+    mutate?: any;
 };
 
 
@@ -79,3 +80,7 @@ export type FetcherOptions = {
     method?: HttpMethod;
     body?: any;
 };
+
+export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+export type JobFormValue = PartialBy<IJob, "id">;
