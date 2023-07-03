@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import { Outlet } from "react-router-dom";
-import ModalComponent from "../modal/ModalComponent";
+import ModalComponent from "../Modal/ModalComponent";
 
 type Props = {
   children?: React.ReactNode;

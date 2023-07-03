@@ -50,7 +50,7 @@ export const useFetchJobById = (jobId: string): FetchData<IJob | null> => {
         throw new Error('Failed to fetch data');
     }
 
-    const url = `${API_BASE_URL}/api/jobs/${jobId}`;   
+    const url = `${API_BASE_URL}/api/jobs/${jobId}`;
 
     const { data, error, isLoading } = useSWR(url,
         (url) => fetcher<{
@@ -63,6 +63,22 @@ export const useFetchJobById = (jobId: string): FetchData<IJob | null> => {
         isLoading,
         error,
     };
+};
+
+export const getAIJobDescription = async (jobId: string, language: string) => {
+
+    if (!jobId) {
+        throw new Error('Failed to fetch data');
+    }
+
+    const url = `${API_BASE_URL}/api/jobs/${jobId}/aidescription/${language}`;
+
+    const response = await fetcher<{
+        data: string
+    }>(url);
+
+    console.log(response);
+    return response.data;
 };
 
 // export const createJob = async (jobData) => {
@@ -108,5 +124,4 @@ export const deleteJob = async (jobId: string) => {
 
 function delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-  
+}
