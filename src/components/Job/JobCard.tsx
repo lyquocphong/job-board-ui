@@ -4,7 +4,7 @@ import {
   ActionEventListener,
   ActionEventType,
   JobCardDetails,
-} from "../types";
+} from "../../types";
 
 interface Props {
   job: JobCardDetails;

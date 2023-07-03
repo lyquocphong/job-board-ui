@@ -1,5 +1,5 @@
 import React from "react";
-import { JobCardDetails } from "../types";
+import { JobCardDetails } from "../../types";
 import Logo from "../Logo/Logo";
 
 type Props = {
