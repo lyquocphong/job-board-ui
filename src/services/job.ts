@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import config from '../config';
-import { FetchData, HttpMethod, IJob } from '../types';
+import { FetchData, HttpMethod, IJob, JobFormValue } from '../types';
 import { mutate } from "swr"
 
 const API_BASE_URL = config.apiUrl;
@@ -36,12 +36,12 @@ export const useFetchJobs = (): FetchData<IJob[]> => {
     };
 };
 
-export const mutateAllJobs = () => {
-    mutate(API_BASE_URL + '/api/jobs');
+export const mutateAllJobs = async () => {    
+    mutate(API_BASE_URL + '/api/jobs')
 }
 
-export const mutateJobById = (jobId: string) => {
-    mutate(`${API_BASE_URL}/api/jobs/${jobId}`);
+export const mutateJobById = async (jobId: string) => {
+    await mutate(`${API_BASE_URL}/api/jobs/${jobId}`);
 }
 
 export const useFetchJobById = (jobId: string): FetchData<IJob | null> => {
@@ -62,6 +62,7 @@ export const useFetchJobById = (jobId: string): FetchData<IJob | null> => {
         data: data?.data || null,
         isLoading,
         error,
+        mutate
     };
 };
 
@@ -79,6 +80,53 @@ export const getAIJobDescription = async (jobId: string, language: string) => {
 
     console.log(response);
     return response.data;
+};
+
+export const updateJob = async (jobId: string, jobData: JobFormValue) => {
+
+    const url = `${API_BASE_URL}/api/jobs/${jobId}`;
+
+    const payload = jobData;
+    
+    if (payload.id) {
+        delete payload.id;
+    }    
+  
+    const response = await fetcher<{
+        data: IJob
+    }>(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    });
+
+    await mutateJobById(jobId);
+    await mutateAllJobs();
+};
+
+export const createJob = async (jobData: JobFormValue) => {
+
+    const url = `${API_BASE_URL}/api/jobs`;
+
+    const payload = jobData;
+    
+    if (payload.id) {
+        delete payload.id;
+    }    
+  
+    const response = await fetcher<{
+        data: IJob
+    }>(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    });
+
+    await mutateAllJobs();
 };
 
 // export const createJob = async (jobData) => {
