@@ -1,6 +1,5 @@
 import NotFoundPage from "./pages/NotFoundPage";
 import JobViewPage from "./pages/JobViewPage";
-import { ActionEvent, IJob } from "./types";
 import { Route, Routes } from "react-router-dom";
 import DashboardPage from "./pages/DashboardPage";
 import MainLayout from "./components/Layout/MainLayout";

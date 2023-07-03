@@ -27,3 +27,27 @@ export type ActionEvent<T> = {
 }
 
 export type ActionEventListener<T> = (event: ActionEvent<T>) => void
+
+export enum ModalType {
+    Base = "base",
+    Confirm = "confirm"
+}
+
+export type ModalData = {
+    type: ModalType;
+    message: string;
+    confirmLabel?: string;
+    cancelLabel?: string;
+    confirmAction?: () => void;
+};
+
+export type BaseModalProps = {
+    message: string;
+    cancelLabel: string;
+    onClose: () => void;
+}
+
+export type ConfirmModalProps = BaseModalProps & {
+    confirmLabel: string;
+    onConfirm: () => void;
+}
