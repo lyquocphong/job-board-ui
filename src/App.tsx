@@ -1,25 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import NotFoundPage from "./pages/NotFoundPage";
+import JobViewPage from "./pages/JobViewPage";
+import { ActionEvent, IJob } from "./types";
+import { Route, Routes } from "react-router-dom";
+import DashboardPage from "./pages/DashboardPage";
+import MainLayout from "./components/Layout/MainLayout";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="" element={<MainLayout />}>
+        <Route index Component={DashboardPage} />
+        <Route path="/job/:id" Component={JobViewPage} />
+        <Route path="*" Component={NotFoundPage} />
+      </Route>
+    </Routes>
   );
 }
 
