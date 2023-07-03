@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { observer } from "mobx-react";
 import { useModalStore } from "../../contexts/StoreContext";
 import { ModalData, ModalType } from "../../types";
 import BaseModal from "./BaseModal";
 import ConfirmModal from "./ConfirmModal";
+import LoaderModal from "./LoaderModal";
 
 const ModalComponent: React.FC = () => {
   const modalStore = useModalStore();
@@ -28,7 +29,7 @@ const ModalComponent: React.FC = () => {
   const { type, message } = modalData;
 
   const confirmLabel = modalData.confirmLabel ?? "Ok";
-  const cancelLabel = modalData.confirmLabel ?? "Cancel";
+  const cancelLabel = modalData.cancelLabel ?? "Cancel";
 
   const renderModalContent = () => {
     switch (type) {
@@ -48,6 +49,12 @@ const ModalComponent: React.FC = () => {
             confirmLabel={confirmLabel}
             onClose={handleClose}
             onConfirm={handleConfirm}
+          />
+        );
+      case ModalType.Loader:
+        return (
+          <LoaderModal
+            message={message}
           />
         );
       default:

@@ -30,7 +30,8 @@ export type ActionEventListener<T> = (event: ActionEvent<T>) => void
 
 export enum ModalType {
     Base = "base",
-    Confirm = "confirm"
+    Confirm = "confirm",
+    Loader = "loader"
 }
 
 export type ModalData = {
@@ -51,3 +52,30 @@ export type ConfirmModalProps = BaseModalProps & {
     confirmLabel: string;
     onConfirm: () => void;
 }
+
+export type LoadingModal = Pick<BaseModalProps, 'message'>;
+
+export type Config = {
+    apiUrl: string;
+    apiKey: string;
+    port: number;
+}
+
+export type FetchData<T> = {
+    data: T | null;
+    isLoading: boolean;
+    isError: boolean;
+};
+
+
+export enum HttpMethod {
+    GET = 'GET',
+    POST = 'POST',
+    DELETE = 'DELETE',
+    PUT = 'PUT',
+}
+
+export type FetcherOptions = {
+    method?: HttpMethod;
+    body?: any;
+};
