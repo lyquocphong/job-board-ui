@@ -106,6 +106,29 @@ export const updateJob = async (jobId: string, jobData: JobFormValue) => {
     await mutateAllJobs();
 };
 
+export const createJob = async (jobData: JobFormValue) => {
+
+    const url = `${API_BASE_URL}/api/jobs`;
+
+    const payload = jobData;
+    
+    if (payload.id) {
+        delete payload.id;
+    }    
+  
+    const response = await fetcher<{
+        data: IJob
+    }>(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    });
+
+    await mutateAllJobs();
+};
+
 // export const createJob = async (jobData) => {
 //   const response = await fetch(API_BASE_URL, {
 //     method: 'POST',
