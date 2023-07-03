@@ -5,7 +5,7 @@ import {
   ActionEventType,
   IJob,
   JobCardDetails,
-} from "../types";
+} from "../../types";
 import JobCard from "./JobCard";
 
 type Props = {
