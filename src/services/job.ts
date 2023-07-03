@@ -25,14 +25,14 @@ const fetcher = async <T>(url: string, options: RequestInit = {}): Promise<T> =>
 
 export const useFetchJobs = (): FetchData<IJob[]> => {
     const url = API_BASE_URL + '/api/jobs';
-    const { data, error } = useSWR(url, (url) => fetcher<{
+    const { data, error, isLoading } = useSWR(url, (url) => fetcher<{
         data: IJob[]
     }>(url));
 
     return {
         data: data?.data || null,
-        isLoading: !error && !data,
-        isError: error,
+        isLoading,
+        error,
     };
 };
 
@@ -46,13 +46,13 @@ export const mutateJobById = (jobId: string) => {
 
 export const useFetchJobById = (jobId: string): FetchData<IJob | null> => {
 
-    const url = jobId ? `${API_BASE_URL}/api/jobs/${jobId}` : null;
-
-    if (!url) {
+    if (!jobId) {
         throw new Error('Failed to fetch data');
     }
 
-    const { data, error } = useSWR(url,
+    const url = `${API_BASE_URL}/api/jobs/${jobId}`;   
+
+    const { data, error, isLoading } = useSWR(url,
         (url) => fetcher<{
             data: IJob
         }>(url)
@@ -60,8 +60,8 @@ export const useFetchJobById = (jobId: string): FetchData<IJob | null> => {
 
     return {
         data: data?.data || null,
-        isLoading: !error && !data,
-        isError: error,
+        isLoading,
+        error,
     };
 };
 

@@ -64,7 +64,7 @@ export type Config = {
 export type FetchData<T> = {
     data: T | null;
     isLoading: boolean;
-    isError: boolean;
+    error: any;
 };
 
 
